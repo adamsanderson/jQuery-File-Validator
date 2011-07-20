@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>jQuery File Validator</title>
+	<meta name="description" content="jQuery File Validator">
+	<meta name="author" content="Adam Sanderson">
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<!-- Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+	
+	<!-- CSS -->
+	<link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" href="css/layout.css">
+	
+  <!-- File Tools Css -->
+  <link rel="stylesheet" href="css/file-validator.css">
+  
+</head>
+<body>
+
+
+
+	<div class="container">	
+		<div class="sixteen columns">
+			<h1 style="margin-top: 40px">jQuery File Validator</h1>
+			<hr />
+		</div>
+		<div class="one-third column">
+			<h3>File Validator</h3>	
+			<p>
+			  Uploading files, only to find that they are too large, or the wrong type is frustrating.
+			  The <code>fileValidator</code> plugin lets you warn users before they start uploading 
+			  enormous files.
+			</p>
+			<div>
+        <a href='' class='button'>Source</a>
+        <a href='' class='button'>Download</a>
+      </div>
+		</div>
+		<nav class="one-third column table-of-contents">
+		  <h3>&nbsp;</h3>
+      <ul>
+        <li><a href='#examples'>Examples</a></li>
+        <li><a href='#documentation'>Documentation</a></li>
+        <li><a href='test/index.html'>Tests</a></li>
+      </ul>
+		</nav>
+		
+		<div class="one-third column">
+		  <img src="images/microscope.gif" width="221" height="337" alt="Microscope">
+		</div>
+		
+    <div class="sixteen columns">
+			<h2 id='examples'>Examples</h2>
+			<p>
+			Use <code>fileValidator</code> to warn people when their uploaded files are too large or in the wrong format:
+			</p>
+			<ul>
+			  <li>
+			    Choose a file under 2kb: <input type='file' class='demo' data-max-size='2kb'/>
+			  </li>
+			  <li>
+			    Choose a file under 2mb: <input type='file' class='demo' data-max-size='2mb'/>
+			  </li>
+			  <li>
+			    Choose an image file: <input type='file' class='demo' data-type='image'/>
+			  </li>
+			</ul>
+		</div>
+		
+		<div class="sixteen columns">
+			<h2 id='documentation'>Documentation</h2>
+      <p>
+        Basic usage is quite straightforward.  Select the file inputs you wish to have validated, and invoke <code>fileValidator</code>.
+      </p>
+
+      <pre class='source sh_javascript_dom'>
+$( el ).fileValidator({
+  onValidation: function(files){ /* Called once before validating files */ },
+  onInvalid:    function(validationType, file){ /* Called once for each invalid file */ },
+  maxSize:      '2m', //optional
+  type:         'image' //optional
+});
+      </pre>
+		</div>
+		
+		<div class="eight columns">
+			<h4>Validation Options</h4>
+			<p>
+			  Validations may be specified either explicitly in the plugin's options, or implicitly with data attributes on the file input.
+			</p>
+			
+		  <dl>
+		    <dt><strong>maxSize</strong>: <code>string</code> or <code>number</code></dt>
+		    <dd>
+		      <p>
+		        The maximum size of the file.  Units may by kilobytes, megabytes, or gigabytes.  If no units are given, then bytes are assumed.
+		        For example: <code>"196kb"</code>, <code>"5m"</code>, or <code>"1.2g"</code> are all valid.
+		      </p>
+		    </dd>
+		    
+		    <dt><strong>type</strong>: <code>string</code>, <code>regexp</code>, or <code>function</code></dt>
+		    <dd>
+		      <p>
+		        The type of the file.  If a string or a regular expression are passed in, then the mime type of the file must match.  If a function is
+		        passed in, the function will be passed the mime type.
+		      </p>
+		    </dd>
+		  </dl>
+		</div>
+		
+		<div class="eight columns">	
+			<h4>Callbacks</h4>
+			<p>
+			  Each time a file input changes, the files are validated.  All validations are called in the context of the element they were
+			  bound to, so <code>this</code> is the file input.
+			</p>
+			<dl>
+		    <dt><strong>onValidation</strong>: <code>function(files)</code> </dt>
+		    <dd>
+		      <p>
+		        Called before validating the list of files.  This is a good point to do any setup you need before validating, for instance
+		        removing classes from a previous validation.
+		      </p>
+		    </dd>
+		    
+		    <dt><strong>onInvalid</strong>: <code>function(validationType, file)</code></dt>
+		    <dd>
+		      <p>
+		        This is called whenever a file fails its validation.  The <code>validationType</code> is the name of validation (eg: <code>maxSize</code>).
+		        This <code>file</code> is the failing file.
+		      </p>
+		    </dd>
+		  </dl>
+		</div>  
+    
+    <div class="sixteen columns">
+      <h4>Sample Code</h4>
+      <p>Flag file fields with large documents:</p>
+      <pre class='source sh_javascript_dom'>
+$('input[type=file]').fileValidator({
+  onValidation: function(files){      $(this).attr('class','');          },
+  onInvalid:    function(type, file){ $(this).addClass('invalid '+type); },
+  maxSize:      '1m'
+});
+      </pre>
+      
+      <p>Reject non image files:</p>
+      <pre class='source sh_javascript_dom'>
+$('input[type=file]').fileValidator({
+  onInvalid:    function(type, file){ $(this).val(null); },
+  type:        'image'
+});
+      </pre>
+      
+      <p>Instead of explicitly stating the validations, you can also encode them on the input fields:</p>
+            <pre class='source sh_html'>
+&lt;input type=&#x27;file&#x27; name=&#x27;small images&#x27; data-max-size=&#x27;32k&#x27; data-type=&#x27;image&#x27;/&gt;
+</pre>
+      
+      <h4>Caveats</h4>
+      <p>
+        Not all browsers support the File API, specifically Internet Explorer users will not see validations.  Also, you should never
+        rely entirely on client side validations.  Your server code should still validate any uploaded files.
+      </p>
+      
+    </div>
+    
+    <div class="sixteen columns">
+      <footer>
+    	  Heck Yes! This was made by <a href='http://monkeyandcrow.com'>Adam Sanderson</a>, 
+    	  drop by <a href='http://monkeyandcrow.com'>Monkey and Crow</a> for more.
+    	</footer>
+    </div>
+	</div><!-- container -->
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
+	<script>window.jQuery || document.write("<script src='js/jquery-1.6.3.js'>\x3C/script>")</script>
+	
+	<script src="js/file-validator.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/app.js"></script>
+	
+  <!-- Syntax Highlighting Support -->
+	<script src="highlighting/sh_main.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="highlighting/sh_javascript_dom.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="highlighting/sh_html.min.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="highlighting/sh_mac_classic.min.css">
+	<script> $(function(){ sh_highlightDocument(); }); </script>
+	
+</body>
+</html>
