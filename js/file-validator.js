@@ -50,6 +50,8 @@ Usage:
       var isValid;
       if( typeof contentType == 'function' ){ 
         isValid = contentType; 
+      } else if (contentType.constructor === RegExp ) { 
+        isValid = function(type){ return type.match(contentType); }; 
       } else { 
         isValid = function(type){ return ~type.indexOf(contentType); }; 
       }
