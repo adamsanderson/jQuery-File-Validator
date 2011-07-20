@@ -31,6 +31,17 @@ nav.table-of-contents{
   text-align: right;
 }
 
+#examples-warning {
+  display: none;
+  
+  padding: 1em;
+
+  border: 1px solid #FB2B31;
+  background-color: #FDD9DB;
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px #999;
+}
+
 footer{
   color: #666;
   margin-top: 8em;

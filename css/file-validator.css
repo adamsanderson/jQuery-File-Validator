@@ -14,7 +14,6 @@ input[type=file].invalid:hover:after{
   width: 12em;
   
   font-weight: bold;
-  background: #fff;
   padding: 1em;
   border: 1px solid #FB2B31;
   background-color: #FDD9DB;
