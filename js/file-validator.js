@@ -1,20 +1,23 @@
 /**
 
-Manages file events for an element.
-Will emit a `filesadded` event with the following data:
-    {
-      files: [files]
-    }
+Uploading files, only to find that they are too large, or the wrong type is frustrating.
+The `fileValidator` plugin lets you warn users before they start uploading 
+enormous files.
 
-Options:
-hoverClassName:  CSS class added to the element when a file is dragged over the
-                 element.
+Usage
+-----
 
-Usage:
-    $(el).fileLoader({
-      // options
+Simply select the file inputs you wish to validate, and pass in a callbacks to handle invalid files.
+
+    $( el ).fileValidator({
+      onValidation: function(files){ ... },
+      onInvalid:    function(validationType, file){ ... },
+      maxSize:      '2m', //optional
+      type:         'image' //optional
     });
+
     
+
 */
 (function($){
   
